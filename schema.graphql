@@ -23,6 +23,7 @@ type ExecuteEvent @entity {
 
 type Message @entity {
   id: ID!
+  blockHeight: BigInt!
   typeUrl: String
   value: String
   from: String

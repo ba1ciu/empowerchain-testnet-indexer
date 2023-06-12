@@ -17,6 +17,7 @@ export async function handleBlock(block: CosmosBlock): Promise<void> {
 export async function handleMsgSend(msg: CosmosMessage): Promise<void> {
   const messageRecord = Message.create({
     id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
     typeUrl: msg.msg.typeUrl,
     value: JSON.stringify(msg.msg.decodedMsg),
     from: msg.msg.decodedMsg.fromAddress,
@@ -28,6 +29,7 @@ export async function handleMsgSend(msg: CosmosMessage): Promise<void> {
 export async function handleMsgMultiSend(msg: CosmosMessage): Promise<void> {
   const messageRecord = Message.create({
     id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
     typeUrl: msg.msg.typeUrl,
     value: JSON.stringify(msg.msg.decodedMsg),
     from: msg.msg.decodedMsg.inputs[0].address,
@@ -39,6 +41,7 @@ export async function handleMsgMultiSend(msg: CosmosMessage): Promise<void> {
 export async function handleMsgGrant(msg: CosmosMessage): Promise<void> {
   const messageRecord = Message.create({
     id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
     typeUrl: msg.msg.typeUrl,
     value: JSON.stringify(msg.msg.decodedMsg),
     from: msg.msg.decodedMsg.granter,
@@ -50,6 +53,7 @@ export async function handleMsgGrant(msg: CosmosMessage): Promise<void> {
 export async function handleMsgRevoke(msg: CosmosMessage): Promise<void> {
   const messageRecord = Message.create({
     id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
     typeUrl: msg.msg.typeUrl,
     value: JSON.stringify(msg.msg.decodedMsg),
     from: msg.msg.decodedMsg.granter,
@@ -61,6 +65,7 @@ export async function handleMsgRevoke(msg: CosmosMessage): Promise<void> {
 export async function handleMsgExec(msg: CosmosMessage): Promise<void> {
   const messageRecord = Message.create({
     id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
     typeUrl: msg.msg.typeUrl,
     value: JSON.stringify(msg.msg.decodedMsg),
     from: msg.msg.decodedMsg.grantee,
@@ -72,6 +77,7 @@ export async function handleMsgExec(msg: CosmosMessage): Promise<void> {
 export async function handleMsgDelegate(msg: CosmosMessage): Promise<void> {
   const messageRecord = Message.create({
     id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
     typeUrl: msg.msg.typeUrl,
     value: JSON.stringify(msg.msg.decodedMsg),
     from: msg.msg.decodedMsg.delegatorAddress,
@@ -83,6 +89,7 @@ export async function handleMsgDelegate(msg: CosmosMessage): Promise<void> {
 export async function handleMsgUndelegate(msg: CosmosMessage): Promise<void> {
   const messageRecord = Message.create({
     id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
     typeUrl: msg.msg.typeUrl,
     value: JSON.stringify(msg.msg.decodedMsg),
     from: msg.msg.decodedMsg.delegatorAddress,
@@ -94,6 +101,7 @@ export async function handleMsgUndelegate(msg: CosmosMessage): Promise<void> {
 export async function handleMsgBeginRedelegate(msg: CosmosMessage): Promise<void> {
   const messageRecord = Message.create({
     id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
     typeUrl: msg.msg.typeUrl,
     value: JSON.stringify(msg.msg.decodedMsg),
     from: msg.msg.decodedMsg.delegatorAddress,
@@ -105,6 +113,7 @@ export async function handleMsgBeginRedelegate(msg: CosmosMessage): Promise<void
 export async function handleMsgCancelUnbondingDelegation(msg: CosmosMessage): Promise<void> {
   const messageRecord = Message.create({
     id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
     typeUrl: msg.msg.typeUrl,
     value: JSON.stringify(msg.msg.decodedMsg),
     from: msg.msg.decodedMsg.delegatorAddress,
@@ -116,6 +125,7 @@ export async function handleMsgCancelUnbondingDelegation(msg: CosmosMessage): Pr
 export async function handleMsgCreateValidator(msg: CosmosMessage): Promise<void> {
   const messageRecord = Message.create({
     id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
     typeUrl: msg.msg.typeUrl,
     value: JSON.stringify(msg.msg.decodedMsg),
     from: msg.msg.decodedMsg.validatorAddress,
@@ -127,6 +137,7 @@ export async function handleMsgCreateValidator(msg: CosmosMessage): Promise<void
 export async function handleMsgEditValidator(msg: CosmosMessage): Promise<void> {
   const messageRecord = Message.create({
     id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
     typeUrl: msg.msg.typeUrl,
     value: JSON.stringify(msg.msg.decodedMsg),
     from: msg.msg.decodedMsg.validatorAddress,
@@ -138,6 +149,7 @@ export async function handleMsgEditValidator(msg: CosmosMessage): Promise<void> 
 export async function handleMsgWithdrawDelegatorReward(msg: CosmosMessage): Promise<void> {
   const messageRecord = Message.create({
     id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
     from: msg.msg.decodedMsg.delegatorAddress,
     typeUrl: msg.msg.typeUrl,
     value: JSON.stringify(msg.msg.decodedMsg),
@@ -159,6 +171,7 @@ export async function handleTransaction(tx: CosmosTransaction): Promise<void> {
 export async function handleMsgTransfer(msg: CosmosMessage): Promise<void> {
   const messageRecord = Message.create({
     id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
     from: msg.msg.decodedMsg.sender,
     typeUrl: msg.msg.typeUrl,
     value: JSON.stringify(msg.msg.decodedMsg),
@@ -188,6 +201,7 @@ export async function handleWasmEvent(event: CosmosEvent): Promise<void> {
   if (event?.event?.attributes?.find(attr => attr.key === 'action')?.value === 'buy_credits') {
     const messageRecord = await Message.create({
       id: `${event.tx.hash}-${event.msg.idx}`,
+      blockHeight: BigInt(event.block.block.header.height),
       typeUrl: 'buyCredits',
       value: value,
       from: event?.event?.attributes?.find(attr => attr.key === 'buyer')?.value,

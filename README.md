@@ -1,4 +1,4 @@
-# SubQuery - Starter Package for Cosmos/Osmosis
+# SubQuery - Starter Package for Cosmos
 
 A basic Cosmos example project with an event and message handler. Read more about SubQuery support for Cosmos at https://academy.subquery.network/quickstart/quickstart_chains/cosmos.html.
 
