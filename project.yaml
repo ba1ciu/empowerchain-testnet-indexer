@@ -1,0 +1,156 @@
+specVersion: 1.0.0
+name: empowerchain-testnet-indexer
+version: 0.0.1
+runner:
+  node:
+    name: "@subql/node-cosmos"
+    version: "*"
+  query:
+    name: "@subql/query"
+    version: "*"
+description: >-
+  Empowerchain testnetindexer
+repository: "https://github.com/EmpowerPlastic/empowerchain"
+schema:
+  file: ./schema.graphql
+network:
+  chainId: circulus-1
+  # This endpoint must be a public non-pruned archive node
+  # Public nodes may be rate limited, which can affect indexing speed
+  # When developing your project we suggest getting a private API key
+  endpoint: "https://testnet.empowerchain.io:26659/"
+  chainTypes:
+    google.protobuf:
+      file: ./proto/google/protobuf/any.proto
+      messages:
+        - Any
+    google.protobuf.Timestamp:
+      file: ./proto/google/protobuf/timestamp.proto
+      messages:
+        - Timestamp
+    cosmos.bank.v1beta1:
+      file: ./proto/cosmos/bank/v1beta1/tx.proto
+      messages:
+        - MsgSend
+        - MsgMultiSend
+    cosmos.bank.v1beta1.Bank:
+      file: ./proto/cosmos/bank/v1beta1/bank.proto
+      messages:
+        - Input
+    cosmos.base.v1beta1:
+      file: ./proto/cosmos/base/v1beta1/coin.proto
+      messages:
+        - Coin
+    cosmos.authz.v1beta1:
+      file: ./proto/cosmos/authz/v1beta1/tx.proto
+      messages:
+        - MsgGrant
+        - MsgRevoke
+        - MsgExec
+    cosmos.authz.v1beta.authz:
+      file: ./proto/cosmos/authz/v1beta1/authz.proto
+      messages:
+        - Grant
+    cosmos.staking.v1beta1:
+      file: ./proto/cosmos/staking/v1beta1/tx.proto
+      messages:
+        - MsgDelegate
+        - MsgBeginRedelegate
+        - MsgUndelegate
+        - MsgCancelUnbondingDelegation
+        - MsgCreateValidator
+        - MsgEditValidator
+    cosmos.staking.v1beta1.staking:
+      file: ./proto/cosmos/staking/v1beta1/staking.proto
+      messages:
+        - Description
+        - CommissionRates
+    cosmos.distribution.v1beta1:
+      file: ./proto/cosmos/distribution/v1beta1/tx.proto
+      messages:
+        - MsgWithdrawDelegatorReward
+
+    empowerchain.proofofexistence:
+      file: ./proto/empowerchain/proofofexistence/tx.proto
+      messages:
+        - MsgCreateProof
+
+    ibc.applications.transfer.v1:
+      file: ./proto/ibc/applications/transfer/v1/tx.proto
+      messages:
+        - MsgTransfer
+    ibc.core.client.v1:
+      file: ./proto/ibc/core/client/v1/client.proto
+      messages:
+        - Height
+
+    
+dataSources:
+  - kind: cosmos/Runtime
+    startBlock: 105000
+    mapping:
+      file: ./dist/index.js
+      handlers:
+        
+        
+        - handler: handleMsgSend
+          kind: cosmos/MessageHandler
+          filter:
+            type: /cosmos.bank.v1beta1.MsgSend
+        - handler: handleMsgMultiSend
+          kind: cosmos/MessageHandler
+          filter:
+            type: /cosmos.bank.v1beta1.MsgMultiSend
+        - handler: handleMsgGrant
+          kind: cosmos/MessageHandler
+          filter:
+            type: /cosmos.authz.v1beta1.MsgGrant
+        - handler: handleMsgRevoke
+          kind: cosmos/MessageHandler
+          filter:
+            type: /cosmos.authz.v1beta1.MsgRevoke
+        - handler: handleMsgExec
+          kind: cosmos/MessageHandler
+          filter:
+            type: /cosmos.authz.v1beta1.MsgExec
+        - handler: handleMsgDelegate
+          kind: cosmos/MessageHandler
+          filter:
+            type: /cosmos.staking.v1beta1.MsgDelegate
+        - handler: handleMsgBeginRedelegate
+          kind: cosmos/MessageHandler
+          filter:
+            type: /cosmos.staking.v1beta1.MsgBeginRedelegate
+        - handler: handleMsgUndelegate
+          kind: cosmos/MessageHandler
+          filter:
+            type: /cosmos.staking.v1beta1.MsgUndelegate
+        - handler: handleMsgCancelUnbondingDelegation
+          kind: cosmos/MessageHandler
+          filter:
+            type: /cosmos.staking.v1beta1.MsgCancelUnbondingDelegation
+        - handler: handleMsgCreateValidator
+          kind: cosmos/MessageHandler
+          filter:
+            type: /cosmos.staking.v1beta1.MsgCreateValidator
+        - handler: handleMsgEditValidator
+          kind: cosmos/MessageHandler
+          filter:
+            type: /cosmos.staking.v1beta1.MsgEditValidator
+        - handler: handleMsgWithdrawDelegatorReward
+          kind: cosmos/MessageHandler
+          filter:
+            type: /cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward
+        - handler: handleMsgTransfer
+          kind: cosmos/MessageHandler
+          filter:
+            type: /ibc.applications.transfer.v1.MsgTransfer
+        
+        - handler: handleBlock
+          kind: cosmos/BlockHandler
+        - handler: handleTransaction
+          kind: cosmos/TransactionHandler
+        - handler: handleWasmEvent
+          kind: cosmos/EventHandler
+          filter:
+            type: wasm
