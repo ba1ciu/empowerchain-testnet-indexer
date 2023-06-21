@@ -1,4 +1,4 @@
-import { ExecuteEvent, Transaction, Block, Message } from "../types";
+import { ExecuteEvent, Transaction, Block, Message, Vote } from "../types";
 import {
   CosmosEvent,
   CosmosBlock,
@@ -178,6 +178,18 @@ export async function handleMsgTransfer(msg: CosmosMessage): Promise<void> {
     hash: msg.tx.hash,
   });
   await messageRecord.save();
+}
+
+export async function handleMsgVote(msg: CosmosMessage): Promise<void> {
+  const voteRecord = Vote.create({
+    id: `${msg.tx.hash}-${msg.idx}`,
+    blockHeight: BigInt(msg.block.block.header.height),
+    voter: msg.msg.decodedMsg.voter,
+    proposalId: msg.msg.decodedMsg.proposalId,
+    option: msg.msg.decodedMsg.option,
+    txHash: msg.tx.hash,
+  });
+  await voteRecord.save();
 }
 
 export async function handleWasmEvent(event: CosmosEvent): Promise<void> {

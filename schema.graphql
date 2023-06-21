@@ -30,6 +30,15 @@ type Message @entity {
   hash: String
 }
 
+type Vote @entity {
+  id: ID!
+  blockHeight: BigInt!
+  txHash: String!
+  proposalId: Int!
+  voter: String!
+  option: Int!
+}
+
 type ProofOfExistence @entity {
   id: ID!
   hash: String!
